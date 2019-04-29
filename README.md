@@ -9,4 +9,5 @@ Creates a backend S3 bucket and DynamoDB table for managing Terraform state
 * `table`
 
 ## Optional Variables
-* `extra_tags`
+* `extra_tags` = `{}`
+* `env` = `global`

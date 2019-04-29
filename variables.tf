@@ -2,8 +2,9 @@ data "aws_caller_identity" "current" {}
 
 locals {
   common_tags = {
-    Namespace = "${var.namespace}"
-    Owner     = "${var.owner}"
+    namespace = "${var.namespace}"
+    owner     = "${var.owner}"
+    env       = "${var.env}"
   }
 }
 
@@ -17,6 +18,11 @@ variable "namespace" {
 
 variable "owner" {
   type = "string"
+}
+
+variable "env" {
+  type    = "string"
+  default = "global"
 }
 
 variable "extra_tags" {
