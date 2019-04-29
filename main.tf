@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "config_bucket" {
     local.common_tags,
     var.extra_tags,
     map(
-      "Name", "tf-state-bucket"
+      "Name", "tf-state"
     )
   )}"
 
