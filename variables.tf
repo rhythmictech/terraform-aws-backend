@@ -12,13 +12,11 @@ variable "region" {
 }
 
 variable "namespace" {
-  type    = "string"
-  default = ""
+  type = "string"
 }
 
 variable "owner" {
-  type    = "string"
-  default = ""
+  type = "string"
 }
 
 variable "extra_tags" {
