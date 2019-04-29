@@ -54,7 +54,7 @@ resource "aws_dynamodb_table" "terraform_statelock" {
     local.common_tags,
     var.extra_tags,
     map(
-      "Name", "tf-state-lock-table"
+      "Name", "tf-locktable"
     )
   )}"
 }
