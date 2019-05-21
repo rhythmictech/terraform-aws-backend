@@ -1,6 +1,7 @@
+
 resource "aws_s3_bucket" "config_bucket" {
   bucket = "${var.bucket}"
-  acl    = "private"
+  acl    = "log-delivery-write"
 
   tags = "${merge(
     local.common_tags,
