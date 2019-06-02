@@ -1,42 +1,45 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+}
 
 locals {
   common_tags = {
-    namespace = "${var.namespace}"
-    owner     = "${var.owner}"
-    env       = "${var.env}"
+    namespace = var.namespace
+    owner     = var.owner
+    env       = var.env
   }
 }
 
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "namespace" {
-  type = "string"
+  type = string
 }
 
 variable "owner" {
-  type = "string"
+  type = string
 }
 
 variable "env" {
-  type    = "string"
+  type    = string
   default = "global"
 }
 
 variable "extra_tags" {
   description = "Mapping of any extra tags you want added to resources"
-  type        = "map"
-  default     = {}
+  type        = map(string)
+  default = {
+  }
 }
 
 variable "bucket" {
   description = "Name of bucket to create"
-  type        = "string"
+  type        = string
 }
 
 variable "table" {
   description = "Name of Dynamo Table to create"
-  type        = "string"
+  type        = string
 }
+

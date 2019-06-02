@@ -1,15 +1,14 @@
-
 resource "aws_s3_bucket" "config_bucket" {
-  bucket = "${var.bucket}"
+  bucket = var.bucket
   acl    = "log-delivery-write"
 
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
     var.extra_tags,
-    map(
-      "Name", "tf-state"
-    )
-  )}"
+    {
+      "Name" = "tf-state"
+    },
+  )
 
   versioning {
     enabled = true
@@ -33,13 +32,13 @@ resource "aws_s3_bucket" "config_bucket" {
   }
 
   logging {
-    target_bucket = "${var.bucket}"
+    target_bucket = var.bucket
     target_prefix = "TFStateLogs/"
   }
 }
 
 resource "aws_s3_bucket_public_access_block" "block_public_access" {
-  bucket                  = "${aws_s3_bucket.config_bucket.id}"
+  bucket                  = aws_s3_bucket.config_bucket.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -47,7 +46,7 @@ resource "aws_s3_bucket_public_access_block" "block_public_access" {
 }
 
 resource "aws_dynamodb_table" "terraform_statelock" {
-  name         = "${var.table}"
+  name         = var.table
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
@@ -56,11 +55,12 @@ resource "aws_dynamodb_table" "terraform_statelock" {
     type = "S"
   }
 
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
     var.extra_tags,
-    map(
-      "Name", "tf-locktable"
-    )
-  )}"
+    {
+      "Name" = "tf-locktable"
+    },
+  )
 }
+
