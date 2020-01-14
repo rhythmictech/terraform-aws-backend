@@ -3,8 +3,7 @@ resource "aws_s3_bucket" "config_bucket" {
   acl    = "log-delivery-write"
 
   tags = merge(
-    local.common_tags,
-    var.extra_tags,
+    var.tags,
     {
       "Name" = "tf-state"
     },
@@ -56,11 +55,9 @@ resource "aws_dynamodb_table" "terraform_statelock" {
   }
 
   tags = merge(
-    local.common_tags,
-    var.extra_tags,
+    var.tags,
     {
       "Name" = "tf-locktable"
     },
   )
 }
-
