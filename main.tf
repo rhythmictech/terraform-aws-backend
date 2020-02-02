@@ -1,3 +1,6 @@
+data "aws_caller_identity" "current" {
+}
+
 resource "aws_s3_bucket" "config_bucket" {
   bucket = var.bucket
   acl    = "log-delivery-write"

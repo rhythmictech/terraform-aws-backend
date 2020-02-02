@@ -1,13 +1,11 @@
-data "aws_caller_identity" "current" {
-}
-
 variable "bucket" {
   description = "Name of bucket to create"
   type        = string
 }
 
 variable "region" {
-  type = string
+  description = "Region bucket will be created in"
+  type        = string
 }
 
 variable "table" {
@@ -16,8 +14,7 @@ variable "table" {
 }
 
 variable "tags" {
+  default     = {}
   description = "Mapping of any extra tags you want added to resources"
   type        = map(string)
-  default = {
-  }
 }

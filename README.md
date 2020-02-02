@@ -22,7 +22,7 @@ module "backend" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | bucket | Name of bucket to create | string | n/a | yes |
-| region |  | string | n/a | yes |
+| region | Region bucket will be created in | string | n/a | yes |
 | table | Name of Dynamo Table to create | string | n/a | yes |
 | tags | Mapping of any extra tags you want added to resources | map(string) | `{}` | no |
 
