@@ -62,6 +62,8 @@ region               = "us-east-1"
 | allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | list(string) | `[]` | no |
 | bucket | Name of bucket to create \(do not provide if using `remote_bucket`\) | string | `""` | no |
 | kms\_key\_id | ARN for KMS key for all encryption operations. | string | `""` | no |
+| logging\_target\_bucket | The name of the bucket that will receive the log objects | string | `var.bucket` | no |
+| logging\_target\_prefix | A key prefix for log objects | string | `"TFStateLogs/"` | no |
 | region | Region bucket will be created in | string | n/a | yes |
 | remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | string | `""` | no |
 | table | Name of Dynamo Table to create | string | `"tf-locktable"` | no |
