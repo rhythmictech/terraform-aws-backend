@@ -1,8 +1,7 @@
 data "aws_iam_policy_document" "key" {
-
   statement {
-    effect    = "Allow"
     actions   = ["kms:*"]
+    effect    = "Allow"
     resources = ["*"]
     principals {
       type        = "AWS"
@@ -14,7 +13,8 @@ data "aws_iam_policy_document" "key" {
     for_each = var.allowed_account_ids
 
     content {
-
+      effect    = "Allow"
+      resources = ["*"]
       actions = [
         "kms:Encrypt*",
         "kms:Decrypt*",
@@ -22,17 +22,13 @@ data "aws_iam_policy_document" "key" {
         "kms:GenerateDataKey*",
         "kms:DescribeKey",
       ]
-      effect    = "Allow"
-      resources = ["*"]
       principals {
         type        = "AWS"
         identifiers = ["arn:aws:iam::${statement.value}:root"]
       }
     }
   }
-
 }
-
 
 resource "aws_kms_key" "this" {
   count                   = var.kms_key_id == "" ? 1 : 0

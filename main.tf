@@ -1,5 +1,4 @@
-data "aws_caller_identity" "current" {
-}
+data "aws_caller_identity" "current" {}
 
 locals {
   account_id = data.aws_caller_identity.current.account_id
@@ -81,15 +80,14 @@ resource "aws_dynamodb_table" "this" {
   )
 }
 
-
 data "aws_iam_policy_document" "this" {
-
-
   statement {
+    effect = "Allow"
+
     actions = [
       "s3:ListBucket"
     ]
-    effect = "Allow"
+
     resources = [
       "arn:aws:s3:::${local.bucket}"
     ]
@@ -104,14 +102,13 @@ data "aws_iam_policy_document" "this" {
     for_each = var.allowed_account_ids
 
     content {
-
+      effect    = "Allow"
+      resources = ["arn:aws:s3:::${local.bucket}/${statement.value}/*"]
       actions = [
         "s3:GetObject",
         "s3:PutObject",
         "s3:DeleteObject"
       ]
-      effect    = "Allow"
-      resources = ["arn:aws:s3:::${local.bucket}/${statement.value}/*"]
 
       principals {
         type        = "AWS"
