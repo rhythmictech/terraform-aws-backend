@@ -17,7 +17,7 @@ variable "kms_key_id" {
 }
 
 variable "logging_target_bucket" {
-  default     = ""
+  default     = null
   description = "The name of the bucket that will receive the log objects"
   type        = string
 }
