@@ -16,6 +16,18 @@ variable "kms_key_id" {
   type        = string
 }
 
+variable "logging_target_bucket" {
+  default     = null
+  description = "The name of the bucket that will receive the log objects"
+  type        = string
+}
+
+variable "logging_target_prefix" {
+  default     = "TFStateLogs/"
+  description = "A key prefix for log objects"
+  type        = string
+}
+
 variable "region" {
   description = "Region bucket will be created in"
   type        = string
