@@ -1,6 +1,6 @@
 # terraform-aws-backend
 
-[![](https://github.com/rhythmictech/terraform-aws-backend/workflows/check/badge.svg)](https://github.com/rhythmictech/terraform-aws-backend/actions)
+[![](https://github.com/rhythmictech/terraform-aws-backend/workflows/pre-commit-check/badge.svg)](https://github.com/rhythmictech/terraform-aws-backend/actions) <a href="https://twitter.com/intent/follow?screen_name=RhythmicTech"><img src="https://img.shields.io/twitter/follow/RhythmicTech?style=social&logo=RhythmicTech" alt="follow on Twitter"></a>
 
 Creates a backend S3 bucket and DynamoDB table for managing Terraform state. Useful for bootstrapping a new
 environment. This module supports cross-account state management, using a centralized account that holds the S3 bucket and KMS key.
