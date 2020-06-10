@@ -49,7 +49,7 @@ resource "aws_s3_bucket" "this" {
   }
 
   logging {
-    target_bucket = var.logging_target_bucket != "" ? var.logging_target_bucket : var.bucket
+    target_bucket = coalesce(var.logging_target_bucket, var.bucket)
     target_prefix = var.logging_target_prefix
   }
 }
