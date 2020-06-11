@@ -28,11 +28,6 @@ variable "logging_target_prefix" {
   type        = string
 }
 
-variable "region" {
-  description = "Region bucket will be created in"
-  type        = string
-}
-
 variable "remote_bucket" {
   default     = ""
   description = "If specified, the remote bucket will be used for the backend. A new bucket will not be created"

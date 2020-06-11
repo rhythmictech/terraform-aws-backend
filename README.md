@@ -1,6 +1,5 @@
 # terraform-aws-backend
-
-[![](https://github.com/rhythmictech/terraform-aws-backend/workflows/check/badge.svg)](https://github.com/rhythmictech/terraform-aws-backend/actions)
+[![](https://github.com/rhythmictech/terraform-aws-backend/workflows/pre-commit-check/badge.svg)](https://github.com/rhythmictech/terraform-aws-backend/actions) <a href="https://twitter.com/intent/follow?screen_name=RhythmicTech"><img src="https://img.shields.io/twitter/follow/RhythmicTech?style=social&logo=RhythmicTech" alt="follow on Twitter"></a>
 
 Creates a backend S3 bucket and DynamoDB table for managing Terraform state. Useful for bootstrapping a new
 environment. This module supports cross-account state management, using a centralized account that holds the S3 bucket and KMS key.
@@ -55,19 +54,31 @@ region               = "us-east-1"
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12.19 |
+| aws | ~> 2.37 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.37 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | list(string) | `[]` | no |
-| bucket | Name of bucket to create \(do not provide if using `remote_bucket`\) | string | `""` | no |
-| kms\_key\_id | ARN for KMS key for all encryption operations. | string | `""` | no |
-| logging\_target\_bucket | The name of the bucket that will receive the log objects | string | `var.bucket` | no |
-| logging\_target\_prefix | A key prefix for log objects | string | `"TFStateLogs/"` | no |
-| region | Region bucket will be created in | string | n/a | yes |
-| remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | string | `""` | no |
-| table | Name of Dynamo Table to create | string | `"tf-locktable"` | no |
-| tags | Mapping of any extra tags you want added to resources | map(string) | `{}` | no |
+|------|-------------|------|---------|:--------:|
+| allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | `list(string)` | `[]` | no |
+| bucket | Name of bucket to create (do not provide if using `remote_bucket`) | `string` | `""` | no |
+| kms\_key\_id | ARN for KMS key for all encryption operations. | `string` | `""` | no |
+| logging\_target\_bucket | The name of the bucket that will receive the log objects | `string` | `null` | no |
+| logging\_target\_prefix | A key prefix for log objects | `string` | `"TFStateLogs/"` | no |
+| remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | `string` | `""` | no |
+| table | Name of Dynamo Table to create | `string` | `"tf-locktable"` | no |
+| tags | Mapping of any extra tags you want added to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
