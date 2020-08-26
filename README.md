@@ -71,14 +71,14 @@ region               = "us-east-1"
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| kms\_key\_id | ARN for KMS key for all encryption operations. | `string` | n/a | yes |
+| remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | `string` | n/a | yes |
+| table | Name of Dynamo Table to create | `string` | n/a | yes |
+| tags | Mapping of any extra tags you want added to resources | `map(string)` | n/a | yes |
 | allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | `list(string)` | `[]` | no |
 | bucket | Name of bucket to create (do not provide if using `remote_bucket`) | `string` | `""` | no |
-| kms\_key\_id | ARN for KMS key for all encryption operations. | `string` | `""` | no |
 | logging\_target\_bucket | The name of the bucket that will receive the log objects | `string` | `null` | no |
 | logging\_target\_prefix | A key prefix for log objects | `string` | `"TFStateLogs/"` | no |
-| remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | `string` | `""` | no |
-| table | Name of Dynamo Table to create | `string` | `"tf-locktable"` | no |
-| tags | Mapping of any extra tags you want added to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

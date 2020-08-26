@@ -13,8 +13,7 @@ locals {
   bucket = var.remote_bucket == "" ? aws_s3_bucket.this[0].id : var.remote_bucket
   kms_key_id = coalesce(
     var.kms_key_id,
-    try(aws_kms_key.this[0].arn, null),
-    "arn:aws:kms:us-east-1:282211067113:key/51965291-49aa-4743-86c9-ab0acfe3c720" # dumb carejourney hack
+    try(aws_kms_key.this[0].arn, null)
   )
 }
 
