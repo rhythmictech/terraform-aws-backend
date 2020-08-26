@@ -11,7 +11,7 @@ locals {
 
   # Resolve resource names
   bucket     = var.remote_bucket == "" ? aws_s3_bucket.this[0].id : var.remote_bucket
-  kms_key_id = coalesce(var.kms_key_id, aws_kms_key.this[0].arn)
+  kms_key_id = coalesce(var.kms_key_id, try(aws_kms_key.this[0].arn, null))
 }
 
 resource "aws_s3_bucket" "this" {
