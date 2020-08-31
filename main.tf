@@ -10,8 +10,8 @@ locals {
   iam_account_principals = formatlist("arn:aws:iam::%s:root", local.account_ids)
 
   # Resolve resource names
-  bucket     = var.remote_bucket == "" ? aws_s3_bucket.this[0].id : var.remote_bucket
-  kms_key_id = var.kms_key_id == "" ? aws_kms_key.this[0].arn : var.kms_key_id
+  bucket     = try(aws_s3_bucket.this[0].id, var.remote_bucket)
+  kms_key_id = try(aws_kms_key.this[0].arn, var.kms_key_id)
 }
 
 resource "aws_s3_bucket" "this" {
