@@ -73,6 +73,7 @@ region               = "us-east-1"
 |------|-------------|------|---------|:--------:|
 | allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | `list(string)` | `[]` | no |
 | bucket | Name of bucket to create (do not provide if using `remote_bucket`) | `string` | `""` | no |
+| kms\_alias\_name | Name of KMS Alias | `string` | `""` | no |
 | kms\_key\_id | ARN for KMS key for all encryption operations. | `string` | `""` | no |
 | logging\_target\_bucket | The name of the bucket that will receive the log objects | `string` | `null` | no |
 | logging\_target\_prefix | A key prefix for log objects | `string` | `"TFStateLogs/"` | no |
