@@ -58,14 +58,14 @@ region               = "us-east-1"
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.19 |
-| aws | ~> 2.37 |
+| terraform | >= 0.13 |
+| aws | ~> 3.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.37 |
+| aws | ~> 3.15.0 |
 
 ## Inputs
 
