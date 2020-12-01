@@ -26,16 +26,12 @@ module "tags" {
 }
 
 module "bucket" {
-  source  = "rhythmictech/bucket/s3logging"
-  version = "1.0.1"
-
+  source        = "rhythmictech/s3logging-bucket/aws"
+  version       = "2.0.0"
   bucket_suffix = "tfstate-logging"
-  region        = local.region
 }
 
 module "backend" {
-  source = "../.."
-
-  logging_target_bucket = module.bucket.s3logging_bucket_name
-  region                = local.region
+  source                = "../.."
+  logging_target_bucket = module.bucket.s3_bucket_name
 }
