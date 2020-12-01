@@ -9,6 +9,11 @@ variable "bucket" {
   description = "Name of bucket to create (do not provide if using `remote_bucket`)"
   type        = string
 }
+variable "kms_alias_name" {
+  default     = ""
+  description = "Name of KMS Alias"
+  type        = string
+}
 
 variable "kms_key_id" {
   default     = ""

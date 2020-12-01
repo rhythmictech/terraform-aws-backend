@@ -30,6 +30,6 @@ module "backend" {
   source = "../.."
 
   bucket = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${module.tags.name}"
-  region = data.aws_region.current.name
+  kms_alias_name = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${module.tags.name}"
   tags   = module.tags.tags
 }

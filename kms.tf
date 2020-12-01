@@ -38,7 +38,7 @@ resource "aws_kms_key" "this" {
   policy                  = data.aws_iam_policy_document.key.json
   tags = merge(
     {
-      "Name" = "tf-backend-key"
+      "Name" = var.kms_alias_name != "" ? var.kms_alias_name : "tf_backend_key"
     },
     var.tags
   )
@@ -46,6 +46,6 @@ resource "aws_kms_key" "this" {
 
 resource "aws_kms_alias" "this" {
   count         = var.kms_key_id == "" ? 1 : 0
-  name          = "alias/tf_backend_config"
+  name          = "alias/${var.kms_alias_name != "" ? var.kms_alias_name : "tf_backend_key" }"
   target_key_id = aws_kms_key.this[0].id
 }
