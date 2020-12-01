@@ -29,7 +29,7 @@ module "tags" {
 module "backend" {
   source = "../.."
 
-  bucket = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${module.tags.name}"
+  bucket         = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${module.tags.name}"
   kms_alias_name = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${module.tags.name}"
-  tags   = module.tags.tags
+  tags           = module.tags.tags
 }

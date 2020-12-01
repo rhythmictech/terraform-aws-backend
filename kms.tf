@@ -46,6 +46,6 @@ resource "aws_kms_key" "this" {
 
 resource "aws_kms_alias" "this" {
   count         = var.kms_key_id == "" ? 1 : 0
-  name          = "alias/${var.kms_alias_name != "" ? var.kms_alias_name : "tf_backend_key" }"
+  name          = "alias/${var.kms_alias_name != "" ? var.kms_alias_name : "tf_backend_key"}"
   target_key_id = aws_kms_key.this[0].id
 }
