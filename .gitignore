@@ -1,6 +1,19 @@
 #  Local .terraform directories
 **/.terraform/*
+**/terraform.d/*
 
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+# plans
+*.tfplan
+*.tfplan.txt
+
+# override files
+override.tf*
+*_override.tf*
+
+# temp files
+**/tmp/**
+**/builds
