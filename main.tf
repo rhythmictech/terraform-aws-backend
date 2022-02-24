@@ -104,7 +104,7 @@ data "aws_iam_policy_document" "this" {
 
     content {
       effect    = "Allow"
-      resources = ["arn:aws:s3:::${local.bucket}/${statement.value}/*"]
+      resources = ["arn:aws:s3:::${local.bucket}/env:/${statement.value}/*"]
       actions = [
         "s3:GetObject",
         "s3:PutObject",
