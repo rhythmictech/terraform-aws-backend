@@ -58,34 +58,51 @@ region               = "us-east-1"
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.13 |
-| aws | ~> 3.15.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.15.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.15.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_dynamodb_table.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
+| [aws_kms_alias.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
+| [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_iam_policy_document.key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| allowed\_account\_ids | Account IDs that are allowed to access the bucket/KMS key | `list(string)` | `[]` | no |
-| bucket | Name of bucket to create (do not provide if using `remote_bucket`) | `string` | `""` | no |
-| kms\_alias\_name | Name of KMS Alias | `string` | `""` | no |
-| kms\_key\_id | ARN for KMS key for all encryption operations. | `string` | `""` | no |
-| logging\_target\_bucket | The name of the bucket that will receive the log objects | `string` | `null` | no |
-| logging\_target\_prefix | A key prefix for log objects | `string` | `"TFStateLogs/"` | no |
-| remote\_bucket | If specified, the remote bucket will be used for the backend. A new bucket will not be created | `string` | `""` | no |
-| table | Name of Dynamo Table to create | `string` | `"tf-locktable"` | no |
-| tags | Mapping of any extra tags you want added to resources | `map(string)` | `{}` | no |
+| <a name="input_allowed_account_ids"></a> [allowed\_account\_ids](#input\_allowed\_account\_ids) | Account IDs that are allowed to access the bucket/KMS key | `list(string)` | `[]` | no |
+| <a name="input_bucket"></a> [bucket](#input\_bucket) | Name of bucket to create (do not provide if using `remote_bucket`) | `string` | `""` | no |
+| <a name="input_kms_alias_name"></a> [kms\_alias\_name](#input\_kms\_alias\_name) | Name of KMS Alias | `string` | `""` | no |
+| <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | ARN for KMS key for all encryption operations. | `string` | `""` | no |
+| <a name="input_logging_target_bucket"></a> [logging\_target\_bucket](#input\_logging\_target\_bucket) | The name of the bucket that will receive the log objects | `string` | `null` | no |
+| <a name="input_logging_target_prefix"></a> [logging\_target\_prefix](#input\_logging\_target\_prefix) | A key prefix for log objects | `string` | `"TFStateLogs/"` | no |
+| <a name="input_remote_bucket"></a> [remote\_bucket](#input\_remote\_bucket) | If specified, the remote bucket will be used for the backend. A new bucket will not be created | `string` | `""` | no |
+| <a name="input_table"></a> [table](#input\_table) | Name of Dynamo Table to create | `string` | `"tf-locktable"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Mapping of any extra tags you want added to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| kms\_key\_arn | ARN of KMS Key for S3 bucket |
-| s3\_bucket\_backend | S3 bucket |
-
+| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of KMS Key for S3 bucket |
+| <a name="output_s3_bucket_backend"></a> [s3\_bucket\_backend](#output\_s3\_bucket\_backend) | S3 bucket |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
