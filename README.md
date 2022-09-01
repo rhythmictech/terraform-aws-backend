@@ -36,12 +36,16 @@ See [Use AssumeRole to Provision AWS Resources Across Accounts](https://learn.ha
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.28.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.2.3 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.4.1 |
 
 ## Modules
 
@@ -55,28 +59,36 @@ No modules.
 | [aws_kms_alias.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_acl.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
 | [aws_s3_bucket_lifecycle_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_logging.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_logging) | resource |
+| [aws_s3_bucket_ownership_controls.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls) | resource |
 | [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [aws_s3_bucket_versioning.versioning_example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
+| [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
+| [local_file.assumerole_addrole](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_sensitive_file.assumerole_tfassumerole](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
+| [random_password.external_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_canonical_user_id.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/canonical_user_id) | data source |
 | [aws_iam_policy_document.key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of bucket to create | `string` | n/a | yes |
+| <a name="input_assumerole_role_attach_policies"></a> [assumerole\_role\_attach\_policies](#input\_assumerole\_role\_attach\_policies) | Policy ARNs to attach to role (can be managed or custom but must exist) | `list(string)` | <pre>[<br>  "arn:aws:iam::aws:policy/AdministratorAccess"<br>]</pre> | no |
+| <a name="input_assumerole_role_external_id"></a> [assumerole\_role\_external\_id](#input\_assumerole\_role\_external\_id) | External ID to attach to role (this is required, a random ID will be generated if not specified here) | `string` | `null` | no |
+| <a name="input_assumerole_role_name"></a> [assumerole\_role\_name](#input\_assumerole\_role\_name) | Name of role to create in assumerole template | `string` | `"Terraform"` | no |
+| <a name="input_assumerole_stack_name"></a> [assumerole\_stack\_name](#input\_assumerole\_stack\_name) | Name of CloudFormation stack | `string` | `"tf-assumerole"` | no |
+| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of bucket to hold tf state | `string` | n/a | yes |
+| <a name="input_create_assumerole_template"></a> [create\_assumerole\_template](#input\_create\_assumerole\_template) | If true, create a CloudFormation template that can be run against accounts to create an assumable role | `bool` | `false` | no |
+| <a name="input_dynamo_locktable_name"></a> [dynamo\_locktable\_name](#input\_dynamo\_locktable\_name) | Name of lock table for terraform | `string` | `"tf-locktable"` | no |
 | <a name="input_kms_alias_name"></a> [kms\_alias\_name](#input\_kms\_alias\_name) | Name of KMS Alias | `string` | `null` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | ARN for KMS key for all encryption operations (a key will be created if this is not provided) | `string` | `null` | no |
 | <a name="input_lifecycle_rules"></a> [lifecycle\_rules](#input\_lifecycle\_rules) | lifecycle rules to apply to the bucket (set to null to skip lifecycle rules) | <pre>list(object(<br>    {<br>      id                            = string<br>      enabled                       = bool<br>      prefix                        = string<br>      expiration                    = number<br>      noncurrent_version_expiration = number<br>  }))</pre> | <pre>[<br>  {<br>    "enabled": true,<br>    "expiration": 90,<br>    "id": "tfstate-expire",<br>    "noncurrent_version_expiration": 90,<br>    "prefix": null<br>  }<br>]</pre> | no |
 | <a name="input_logging_target_bucket"></a> [logging\_target\_bucket](#input\_logging\_target\_bucket) | The name of the bucket that will receive the log objects (logging will be disabled if null) | `string` | `null` | no |
 | <a name="input_logging_target_prefix"></a> [logging\_target\_prefix](#input\_logging\_target\_prefix) | A key prefix for log objects | `string` | `null` | no |
-| <a name="input_table"></a> [table](#input\_table) | Name of Dynamo Table to create | `string` | `"tf-locktable"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Mapping of any extra tags you want added to resources | `map(string)` | `{}` | no |
 
 ## Outputs

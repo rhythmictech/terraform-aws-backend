@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Creates a role that can be assumed by the designated account for terraform runs
+
+Resources:
+  FullAdminRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: ${role_name}
+      MaxSessionDuration: 7200
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS: 'arn:${partition}:iam::${parent_account_id}:root'
+          Action:
+          - sts:AssumeRole
+          Condition:
+            StringEquals:
+              sts:ExternalId: ${external_id}
+      Path: '/'
+      ManagedPolicyArns:
+%{ for policy in policy_arns ~}
+        - ${policy}
+%{ endfor ~}

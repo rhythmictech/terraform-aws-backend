@@ -1,5 +1,11 @@
 variable "bucket_name" {
-  description = "Name of bucket to create"
+  description = "Name of bucket to hold tf state"
+  type        = string
+}
+
+variable "dynamo_locktable_name" {
+  default     = "tf-locktable"
+  description = "Name of lock table for terraform"
   type        = string
 }
 
@@ -48,14 +54,42 @@ variable "logging_target_prefix" {
   type        = string
 }
 
-variable "table" {
-  default     = "tf-locktable"
-  description = "Name of Dynamo Table to create"
-  type        = string
-}
-
 variable "tags" {
   default     = {}
   description = "Mapping of any extra tags you want added to resources"
   type        = map(string)
+}
+
+########################################
+# Assume Role Template Vars
+########################################
+variable "create_assumerole_template" {
+  default     = false
+  description = "If true, create a CloudFormation template that can be run against accounts to create an assumable role"
+  type        = bool
+}
+
+
+variable "assumerole_role_name" {
+  default     = "Terraform"
+  description = "Name of role to create in assumerole template"
+  type        = string
+}
+
+variable "assumerole_role_external_id" {
+  default     = null
+  description = "External ID to attach to role (this is required, a random ID will be generated if not specified here)"
+  type        = string
+}
+
+variable "assumerole_role_attach_policies" {
+  default     = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  description = "Policy ARNs to attach to role (can be managed or custom but must exist)"
+  type        = list(string)
+}
+
+variable "assumerole_stack_name" {
+  default     = "tf-assumerole"
+  description = "Name of CloudFormation stack"
+  type        = string
 }
