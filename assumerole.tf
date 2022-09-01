@@ -5,7 +5,7 @@ locals {
 resource "local_file" "assumerole_addrole" {
   count = var.create_assumerole_template ? 1 : 0
 
-  filename = "${path.module}/assumerole/addrole.sh"
+  filename = "assumerole/addrole.sh"
 
   content = templatefile("${path.module}/template/addrole.sh.tftpl", {
     stack_name = var.assumerole_stack_name
@@ -16,7 +16,7 @@ resource "local_file" "assumerole_addrole" {
 resource "local_sensitive_file" "assumerole_tfassumerole" {
   count = var.create_assumerole_template ? 1 : 0
 
-  filename = "${path.module}/assumerole/tfassumerole.cfn.yml"
+  filename = "assumerole/tfassumerole.cfn.yml"
 
   content = templatefile("${path.module}/template/tfassumerole.cfn.yml.tftpl", {
     external_id       = local.external_id
