@@ -1,6 +1,6 @@
 output "s3_bucket_backend" {
   description = "S3 bucket"
-  value       = try(aws_s3_bucket.this[0].bucket, var.remote_bucket)
+  value       = aws_s3_bucket.this.bucket
 }
 
 output "kms_key_arn" {
