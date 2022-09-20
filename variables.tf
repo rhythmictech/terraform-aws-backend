@@ -22,15 +22,8 @@ variable "kms_key_id" {
 }
 
 variable "lifecycle_rules" {
+  default     = null
   description = "lifecycle rules to apply to the bucket (set to null to skip lifecycle rules)"
-
-  default = [{
-    id                            = "tfstate-expire"
-    enabled                       = true
-    expiration                    = 90
-    noncurrent_version_expiration = 90
-    prefix                        = null
-  }]
 
   type = list(object(
     {
