@@ -1,5 +1,17 @@
-# Basic Backend Example
-Creates resources for a secure backend in AWS
+#  Basic Backend Example
+Creates resources for a secure backend in AWS to support separate AWS accounts. To use this backend, use the following provider definition:
+
+```
+provider "aws" {
+  region = var.region
+
+  assume_role {
+    role_arn    = "arn:aws-us-gov:iam::012345678901:role/Terraform"
+    external_id = "YourExternalID"
+  }
+}
+
+You will need to run Terraform with IAM credentials of the account that holds the state rather than the accounts that you are working on.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -8,23 +20,17 @@ No requirements.
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+No providers.
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_backend"></a> [backend](#module\_backend) | ../.. |  |
-| <a name="module_tags"></a> [tags](#module\_tags) | rhythmictech/tags/terraform | 1.0.0 |
+| <a name="module_tfstate"></a> [tfstate](#module\_tfstate) | ../.. | n/a |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+No resources.
 
 ## Inputs
 
