@@ -29,6 +29,10 @@ To use this bucket to manage the state for other AWS accounts, you must create I
 
 See [Use AssumeRole to Provision AWS Resources Across Accounts](https://learn.hashicorp.com/tutorials/terraform/aws-assumerole) for more information on this pattern.
 
+This module is not intended to hold the state for the account in which it is created. If the account itself is also Terraform managed, it is recommended to create a separate bucket for its own state manually or via a different IaC method (e.g., CloudFormation). 
+
+This module will create a CloudFormation stack and an optional wrapper script to deploy it. This stack is suitable to run in any account that will store its Terraform state in this backend. It creates an IAM role with the AdministratorAccess policy attached and with an External ID.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -95,6 +99,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_external_id"></a> [external\_id](#output\_external\_id) | External ID attached to IAM role in managed accounts |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of KMS Key for S3 bucket |
-| <a name="output_s3_bucket_backend"></a> [s3\_bucket\_backend](#output\_s3\_bucket\_backend) | S3 bucket |
+| <a name="output_s3_bucket_backend"></a> [s3\_bucket\_backend](#output\_s3\_bucket\_backend) | S3 bucket used to store TF state |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
