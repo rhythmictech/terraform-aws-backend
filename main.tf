@@ -125,4 +125,8 @@ resource "aws_s3_bucket_policy" "this" {
   count  = var.remote_bucket == "" ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   policy = data.aws_iam_policy_document.this.json
+
+  lifecycle {
+    ignore_changes = [policy]
+  }
 }
