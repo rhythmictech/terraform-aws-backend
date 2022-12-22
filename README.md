@@ -7,31 +7,81 @@
 [![pre-commit-check](https://github.com/rhythmictech/terraform-aws-backend/workflows/pre-commit-check/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-backend/actions?query=workflow%3Apre-commit-check+event%3Apush+branch%3Amaster)
 <a href="https://twitter.com/intent/follow?screen_name=RhythmicTech"><img src="https://img.shields.io/twitter/follow/RhythmicTech?style=social&logo=twitter" alt="follow on Twitter"></a>
 
-Creates a backend S3 bucket and DynamoDB table for managing Terraform state. Note that when bootstrapping a new environment, it is typically easier to use a separate method for creating the bucket and lock table. This module is intended to create a backend in an AWS account that is already Terraform-managed. This is useful to store the state for other accounts externally, which is always preferred.
+Creates an S3 bucket and DynamoDB table for managing Terraform state. Note that when bootstrapping a new environment, it is typically easier to use a separate method for creating the bucket and lock table, like [a CloudFormation Stack](https://github.com/rhythmictech/AWS-CFN-Terraform-Bootstrap). This module is intended to create a backend in an AWS account that is already Terraform-managed. This is useful to store the state for other accounts externally.
+
+This module will create a CloudFormation stack and an optional wrapper script to deploy it. This stack is suitable to run in any account that will store its Terraform state in the bucket created by this module. It creates an IAM role with the AdministratorAccess policy attached and with an External ID which can then be assumed by terraform to create resources in the child account(s).
+
+![visualization](.github/terraform-backend.drawio.png)
 
 *Breaking Changes*
 
 Previous versions of this module had support for cross-account management in a way that proved awkward for many uses cases and made it more difficult than it should've to fully secure the tfstate between accounts. Version 4.x and later eliminates support for this and refocuses the module on using centralized tfstate buckets with cross-account role assumption for execution of terraform. As a result, many variable names have changed and functionality has been dropped. Upgrade to this version at your own peril.
 
-## Usage
+## Multi-Account Usage
+These instructions assume two AWS accounts; a "Parent" account which holds the terraform state and IAM users, and a "Child" account.
+
+1) In the parent account create this module. The below code is a serving suggestion. 
 ```
 module "backend" {
-  source    = "rhythmictech/backend/aws"
-  
-  bucket    = "project-tfstate"
-  region    = "us-east-1"
-  table     = "tf-locktable"
+  source  = "rhythmictech/backend/aws"
+  version = "4.1.0"
+
+  bucket_name                = "${local.account_id}-${var.region}-terraform-state"
+  create_assumerole_template = true
+  logging_target_bucket      = module.s3logging-bucket.s3_bucket_name
+  logging_target_prefix      = "${local.account_id}-${var.region}-tf-state"
+  tags                       = module.tags.tags_no_name
 }
 ```
 
+It will create a folder with a shell script and a CloudFormation stack in it. 
+
+2) Log into the child account and run the shell script, `assumerole/addrole.sh`. This will create a CloudFormation stack in that child account.
+
+3) In the terraform code for the child account create the provider and backend sections like below, substituting `PARENT_ACCT_ID` and `PARENT_REGION`, `CHILD_ACCT_ID`, AND `EXTERNAL_ID`.  
+
+terraform backend config:
+```
+bucket         = "PARENT_ACCT_ID-PARENT_REGION-terraform-state"
+dynamodb_table = "tf-locktable"
+key            = "account.tfstate"
+region         = "PARENT_REGION"
+```
+
+provider config:
+```
+provider "aws" {
+  assume_role {
+    role_arn     = "arn:aws:iam::CHILD_ACCT_ID:role/Terraform"
+    session_name = "terraform-network"
+    external_id  = "EXTERNAL_ID"
+  }
+}
+```
+
+4) Log in to the master account and run terraform using this backend and provider config. The state will be stored in the parent account but terraform will assume the child account role.
+
 ## Cross Account State Management
-To use this bucket to manage the state for other AWS accounts, you must create IAM roles in those accounts and allow the users who run Terraform to assume them.
 
 See [Use AssumeRole to Provision AWS Resources Across Accounts](https://learn.hashicorp.com/tutorials/terraform/aws-assumerole) for more information on this pattern.
 
-This module is not intended to hold the state for the account in which it is created. If the account itself is also Terraform managed, it is recommended to create a separate bucket for its own state manually or via a different IaC method (e.g., CloudFormation). 
+This module is not intended to hold the state for the account in which it is created. If the account itself is also Terraform managed, it is recommended to create a separate bucket for its own state manually or via a different IaC method (e.g., CloudFormation) to avoid the chicken-and-egg problem. See [this CloudFormation template](https://github.com/rhythmictech/AWS-CFN-Terraform-Bootstrap) to create terraform backend for this or any other single account. 
 
-This module will create a CloudFormation stack and an optional wrapper script to deploy it. This stack is suitable to run in any account that will store its Terraform state in this backend. It creates an IAM role with the AdministratorAccess policy attached and with an External ID.
+You can test the ability to assume a role in the child account by logging in with the parent account and running this 
+```
+
+export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
+$(aws sts assume-role \
+--external-id EXTERNAL_ID \
+--role-arn arn:aws:iam::CHILD_ACCT_ID:role/Terraform \
+--role-session-name testme \
+--query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+--output text))%  
+
+AWS_SECURITY_TOKEN=
+```
+Then `aws sts get-caller-identity` should reveal you to be in the child account. 
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -102,7 +152,9 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_backend_config_stub"></a> [backend\_config\_stub](#output\_backend\_config\_stub) | Backend config stub to be used in child account(s) |
 | <a name="output_external_id"></a> [external\_id](#output\_external\_id) | External ID attached to IAM role in managed accounts |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | ARN of KMS Key for S3 bucket |
+| <a name="output_provider_config_stub"></a> [provider\_config\_stub](#output\_provider\_config\_stub) | Provider config stub to be used in child account(s) |
 | <a name="output_s3_bucket_backend"></a> [s3\_bucket\_backend](#output\_s3\_bucket\_backend) | S3 bucket used to store TF state |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
