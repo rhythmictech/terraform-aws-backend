@@ -9,6 +9,24 @@ variable "dynamo_locktable_name" {
   type        = string
 }
 
+variable "dynamodb_kms_key_arn" {
+  default     = null
+  description = "KMS key arn to enable encryption on dynamodb table. Defaults to `alias/aws/dynamodb`"
+  type        = string
+}
+
+variable "dynamodb_point_in_time_recovery" {
+  default     = true
+  description = "DynamoDB point-in-time recovery."
+  type        = bool
+}
+
+variable "dynamodb_server_side_encryption" {
+  default     = true
+  description = "Bool to enable encryption on dynamodb table"
+  type        = bool
+}
+
 variable "kms_alias_name" {
   default     = null
   description = "Name of KMS Alias"

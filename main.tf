@@ -1,11 +1,8 @@
-data "aws_caller_identity" "current" {
-}
+data "aws_caller_identity" "current" {}
 
-data "aws_partition" "current" {
-}
+data "aws_partition" "current" {}
 
-data "aws_region" "current" {
-}
+data "aws_region" "current" {}
 
 locals {
   account_id = data.aws_caller_identity.current.account_id
@@ -112,5 +109,14 @@ resource "aws_dynamodb_table" "this" {
   attribute {
     name = "LockID"
     type = "S"
+  }
+
+  point_in_time_recovery {
+    enabled = var.dynamodb_point_in_time_recovery
+  }
+
+  server_side_encryption {
+    enabled     = var.dynamodb_server_side_encryption
+    kms_key_arn = var.dynamodb_kms_key_arn
   }
 }
