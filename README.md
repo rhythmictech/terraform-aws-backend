@@ -67,6 +67,21 @@ See [Use AssumeRole to Provision AWS Resources Across Accounts](https://learn.ha
 
 This module is not intended to hold the state for the account in which it is created. If the account itself is also Terraform managed, it is recommended to create a separate bucket for its own state manually or via a different IaC method (e.g., CloudFormation) to avoid the chicken-and-egg problem. See [this CloudFormation template](https://github.com/rhythmictech/AWS-CFN-Terraform-Bootstrap) to create terraform backend for this or any other single account. 
 
+You can test the ability to assume a role in the child account by logging in with the parent account and running this 
+```
+
+export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
+$(aws sts assume-role \
+--external-id EXTERNAL_ID \
+--role-arn arn:aws:iam::CHILD_ACCT_ID:role/Terraform \
+--role-session-name testme \
+--query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+--output text))%  
+
+AWS_SECURITY_TOKEN=
+```
+Then `aws sts get-caller-identity` should reveal you to be in the child account. 
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
