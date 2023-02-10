@@ -135,6 +135,7 @@ No modules.
 | <a name="input_assumerole_role_external_id"></a> [assumerole\_role\_external\_id](#input\_assumerole\_role\_external\_id) | External ID to attach to role (this is required, a random ID will be generated if not specified here) | `string` | `null` | no |
 | <a name="input_assumerole_role_name"></a> [assumerole\_role\_name](#input\_assumerole\_role\_name) | Name of role to create in assumerole template | `string` | `"Terraform"` | no |
 | <a name="input_assumerole_stack_name"></a> [assumerole\_stack\_name](#input\_assumerole\_stack\_name) | Name of CloudFormation stack | `string` | `"tf-assumerole"` | no |
+| <a name="input_assumerole_template_name"></a> [assumerole\_template\_name](#input\_assumerole\_template\_name) | File name of assumerole cloudformation template | `string` | `"assumerole/tfassumerole.cfn.yml"` | no |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of bucket to hold tf state | `string` | n/a | yes |
 | <a name="input_create_assumerole_template"></a> [create\_assumerole\_template](#input\_create\_assumerole\_template) | If true, create a CloudFormation template that can be run against accounts to create an assumable role | `bool` | `false` | no |
 | <a name="input_dynamo_locktable_name"></a> [dynamo\_locktable\_name](#input\_dynamo\_locktable\_name) | Name of lock table for terraform | `string` | `"tf-locktable"` | no |

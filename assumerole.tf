@@ -16,7 +16,7 @@ resource "local_file" "assumerole_addrole" {
 resource "local_sensitive_file" "assumerole_tfassumerole" {
   count = var.create_assumerole_template ? 1 : 0
 
-  filename = "assumerole/tfassumerole.cfn.yml"
+  filename = var.assumerole_template_name
 
   content = templatefile("${path.module}/template/tfassumerole.cfn.yml.tftpl", {
     external_id       = local.external_id

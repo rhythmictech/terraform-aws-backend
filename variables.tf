@@ -80,7 +80,6 @@ variable "create_assumerole_template" {
   type        = bool
 }
 
-
 variable "assumerole_role_name" {
   default     = "Terraform"
   description = "Name of role to create in assumerole template"
@@ -102,5 +101,11 @@ variable "assumerole_role_attach_policies" {
 variable "assumerole_stack_name" {
   default     = "tf-assumerole"
   description = "Name of CloudFormation stack"
+  type        = string
+}
+
+variable "assumerole_template_name" {
+  default     = "assumerole/tfassumerole.cfn.yml"
+  description = "File name of assumerole cloudformation template"
   type        = string
 }
