@@ -1,1 +1,1 @@
-aws cloudformation create-stack --capabilities CAPABILITY_NAMED_IAM --template-body file://tfassumerole.cfn.yml --stack-name ${stack_name}
+aws cloudformation create-stack --capabilities CAPABILITY_NAMED_IAM --template-body file://${assumerole_template_name} --stack-name ${stack_name}
