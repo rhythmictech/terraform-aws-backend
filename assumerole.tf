@@ -8,7 +8,7 @@ resource "local_file" "assumerole_addrole" {
   filename = "assumerole/addrole.sh"
 
   content = templatefile("${path.module}/template/addrole.sh.tftpl", {
-    stack_name = var.assumerole_stack_name
+    stack_name               = var.assumerole_stack_name
     assumerole_template_name = var.assumerole_template_name
   })
 
