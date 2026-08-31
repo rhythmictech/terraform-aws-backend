@@ -7,7 +7,7 @@ data "aws_region" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
   partition  = data.aws_partition.current.partition
-  region     = data.aws_region.current.name
+  region     = data.aws_region.current.region
 
   # Resolve resource names
   bucket_name = try(var.bucket_name, "${local.account_id}-${local.region}-tfstate")
@@ -74,6 +74,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.bucket
 
   rule {
+    blocked_encryption_types = var.blocked_encryption_types
+
     apply_server_side_encryption_by_default {
       kms_master_key_id = local.kms_key_id
       sse_algorithm     = "aws:kms"

@@ -1,3 +1,14 @@
+variable "blocked_encryption_types" {
+  default     = ["SSE-C"]
+  description = "Server-side encryption types to block for object uploads. AWS blocks `SSE-C` on new buckets by default (rolling out since March 2026) and nothing should write tfstate with customer-provided keys. Set to `[\"NONE\"]` to unblock all encryption types."
+  type        = list(string)
+
+  validation {
+    condition     = alltrue([for t in var.blocked_encryption_types : contains(["SSE-C", "NONE"], t)])
+    error_message = "blocked_encryption_types may only contain \"SSE-C\" or \"NONE\"."
+  }
+}
+
 variable "bucket_name" {
   description = "Name of bucket to hold tf state"
   type        = string
